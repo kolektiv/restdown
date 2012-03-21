@@ -127,7 +127,7 @@ class Restdowner(Markdown):
     _method_subs = [
         # E.g. "ListMachines (GET /machines)"
         (re.compile(r'^(?P<name>.*?) +\((?P<verb>GET|PUT|POST|DELETE|HEAD|OPTIONS|TRACE) +(?P<path>.*?)\)$'),
-         r'<span class="method both"><span class="name">\1</span> <span class="endpoint">(<span class="verb">\2</span> <span class="path">\3</span>)</span>'),
+         r'<span class="method both"><span class="name">\1</span> <span class="endpoint"><span class="verb">\2</span> <span class="path">\3</span></span>'),
         # E.g. "GET /machines"
         (re.compile(r'^(?P<verb>GET|PUT|POST|DELETE|HEAD|OPTIONS|TRACE) +(?P<path>.+?)$'),
          r'<span class="method justendpoint"><span class="endpoint"><span class="verb">\1</span> <span class="path">\2</span></span>'),
@@ -167,9 +167,9 @@ class Restdowner(Markdown):
         text = self._pre_command_block_re.sub(
             r'<pre class="shell"><code>\1</code></pre>', text)
 
-        # First h1 body is wrapped in `<div class="intro">`.
+        # First h1 body is wrapped in `<section id="intro">`.
         text = self._first_h1_and_block_re.sub(
-            r'\n\1\n<div class="intro">\n\2\n</div>\n', text, 1)
+            r'\n\1\n<section id="intro">\n\2\n</section>\n', text, 1)
 
         return text
 
@@ -302,13 +302,13 @@ h1,h2,h3,h4,h5,h6 {
     if toc_html_marker not in header_in and toc_html_marker not in footer_in:
         bits.append
         bits.append(u"""
-    <div id="sidebar">
+    <nav id="toc">
 %(toc_html)s
-    </div>
+    </nav>
 """ % metadata)
-    bits.append('    <div id="content">\n')
+    bits.append('    <section id="content">\n')
     bits.append(html)
-    bits.append(u"\n    </div>\n")
+    bits.append(u"\n    </section>\n")
     bits.append(footer)
 
     endpoints = []
